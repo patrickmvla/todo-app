@@ -1,18 +1,24 @@
-import {
-  Flex,
-  Checkbox,
-  Text,
-  Container,
-  StackDivider,
-  VStack,
-  Button,
-} from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
-import { TodoListModel } from "../api/models";
-import { useTodosQuery } from "../hooks/usetodos-query";
+import {
+  Button,
+  Checkbox,
+  Container,
+  Flex,
+  StackDivider,
+  Text,
+  Toast,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
+import { useTodosQuery } from "../hooks/use-todos-query";
+import { useDeleteTodoMutation } from "../hooks/use-delete-todo-mutation";
+import { useUpdateTodoMutation } from "../hooks/use-update-todo-mutation";
 
 const TodoList = () => {
   const { status, data } = useTodosQuery();
+  const updateTodoMutation = useUpdateTodoMutation();
+  const deleteTodoMutation = useDeleteTodoMutation();
+  const toast = useToast();
 
   if (status === "loading") return <span>Loading..</span>;
   if (status === "error") return <span>Error!</span>;
@@ -52,6 +58,21 @@ const TodoList = () => {
                 colorScheme="brand"
                 onChange={() => {
                   // 👉 TODO: Add logic for completing a todo item
+                  const mutationParams = {
+                    ...item,
+                    completed: !item.completed,
+                  };
+                  updateTodoMutation.mutate(mutationParams, {
+                    onError: () => {
+                      toast({
+                        title: "Failed update",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom-right",
+                      });
+                    },
+                  });
                 }}
               />
               <Text marginLeft="4" fontSize="md">
@@ -68,6 +89,17 @@ const TodoList = () => {
                 variant="ghost"
                 onClick={() => {
                   // 👉 TODO: Add logic for deleting a todo item
+                  deleteTodoMutation.mutate(item.id, {
+                    onError: () => {
+                      toast({
+                        title: "Failed update",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom-right",
+                      });
+                    },
+                  });
                 }}
               >
                 <CloseIcon boxSize={2} />
