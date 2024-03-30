@@ -6,12 +6,11 @@ import {
   Flex,
   StackDivider,
   Text,
-  Toast,
   VStack,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
-import { useTodosQuery } from "../hooks/use-todos-query";
 import { useDeleteTodoMutation } from "../hooks/use-delete-todo-mutation";
+import { useTodosQuery } from "../hooks/use-todos-query";
 import { useUpdateTodoMutation } from "../hooks/use-update-todo-mutation";
 
 const TodoList = () => {

@@ -1,6 +1,12 @@
-import { useMutation } from "@tanstack/react-query"
-import todosApi from "../api"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import todosApi from "../api";
 
 export const useDeleteTodoMutation = () => {
-    return useMutation({mutationFn: todosApi.delete})
-}
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: todosApi.delete,
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+};
