@@ -9,14 +9,14 @@ import {
   VStack,
   useToast
 } from "@chakra-ui/react";
-import { useDeleteTodoMutation } from "../hooks/use-delete-todo-mutation";
+import { useDeleteTodoMutationOptimistic } from "../hooks/use-delete-todo-mutation-optimistic";
 import { useTodosQuery } from "../hooks/use-todos-query";
-import { useUpdateTodoMutation } from "../hooks/use-update-todo-mutation";
+import { useUpdateTodoMutationOptimistic } from "../hooks/use-update-tosoo-mutation-optimistic";
 
 const TodoList = () => {
   const { status, data } = useTodosQuery();
-  const updateTodoMutation = useUpdateTodoMutation();
-  const deleteTodoMutation = useDeleteTodoMutation();
+  const updateTodoMutation = useUpdateTodoMutationOptimistic();
+  const deleteTodoMutation = useDeleteTodoMutationOptimistic();
   const toast = useToast();
 
   if (status === "loading") return <span>Loading..</span>;
